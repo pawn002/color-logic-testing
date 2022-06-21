@@ -17,7 +17,7 @@ export default {
   ],
   parameters: {
     // More on Story layout: https://storybook.js.org/docs/angular/configure/story-layout
-    layout: 'fullscreen',
+    layout: 'centered',
   },
 } as Meta;
 
