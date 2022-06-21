@@ -196,6 +196,139 @@
             }
         },
         {
+            "name": "ChromajsViewComponent",
+            "id": "component-ChromajsViewComponent-428c5c7621dd2b0b64268c1858f67d7bb726b901b3df4c434251a9a6f661a15758f02cfeaedd743f633e2edf742e3b2a826a222115ba5283664221509582e348",
+            "file": "src/app/chromajs-view/chromajs-view.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-chromajs-view",
+            "styleUrls": [
+                "./chromajs-view.component.css"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./chromajs-view.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 37,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "testGradient",
+                    "args": [
+                        {
+                            "name": "color1",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "color2",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "chroma.Scale | void",
+                    "typeParameters": [],
+                    "line": 20,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "color1",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "color2",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "typingsTest",
+                    "args": [
+                        {
+                            "name": "color",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 12,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "color",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\n// importing all of chroma.js to speed testing\nimport * as chroma from 'chroma-js';\n\n@Component({\n  selector: 'app-chromajs-view',\n  templateUrl: './chromajs-view.component.html',\n  styleUrls: ['./chromajs-view.component.css'],\n})\nexport class ChromajsViewComponent implements OnInit {\n  // test simple oklab output\n  typingsTest(color: string): boolean {\n    //  NOTE: typings not updated for chroma-js 2.4ish as 2MAY2022@0956\n    // @ts-ignore\n    console.table(color, chroma(color).oklab());\n\n    return false;\n  }\n\n  testGradient(color1: string, color2: string): chroma.Scale | void {\n    if (!chroma.valid(color1) || !chroma.valid(color1)) {\n      console.error('invalid color');\n    } else {\n      // @ts-ignore\n      const scale_oklab = chroma.scale([color1, color2]).mode('oklab');\n\n      return scale_oklab;\n    }\n  }\n\n  constructor() {\n    this.typingsTest('black');\n\n    this.testGradient('white', 'blue');\n  }\n\n  ngOnInit(): void { }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./chromajs-view.component.css"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 29
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<h1><code>chroma.js</code></h1>\n"
+        },
+        {
             "name": "HeaderComponent",
             "id": "component-HeaderComponent-a557eec14f72c438a8033301f4d6ce023e0a1844a3b06ec2b38794a612acc31735ae78a5ee10071b230c8c20d699eb914554e69d07ade54adb371da8efb464cc",
             "file": "src/stories/header.component.ts",
@@ -352,13 +485,13 @@
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-2ec58e7a32463b9b6cd970cb31e08e29029a47873b1b978b2bb334fc7975f6f5b3557f06f1d8edb8d9117c1bc37b26d4301c2a5e8ccced6f4a56dde5c6a98af4",
+            "id": "module-AppModule-3e668b302e35914344290f4c8c2f233f7ee0cc2bdb741318e06c29794ab5047020fa9f1168683780f1dfda1fe609ea75f9259bf67e287e48e25605441783797e",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\nimport { BrowserModule } from '@angular/platform-browser';\n\nimport { AppComponent } from './app.component';\n\n@NgModule({\n  declarations: [\n    AppComponent\n  ],\n  imports: [\n    BrowserModule\n  ],\n  providers: [],\n  bootstrap: [AppComponent]\n})\nexport class AppModule { }\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { BrowserModule } from '@angular/platform-browser';\n\nimport { AppComponent } from './app.component';\nimport { ChromajsViewComponent } from './chromajs-view/chromajs-view.component';\n\n@NgModule({\n  declarations: [\n    AppComponent,\n    ChromajsViewComponent\n  ],\n  imports: [\n    BrowserModule\n  ],\n  providers: [],\n  bootstrap: [AppComponent]\n})\nexport class AppModule { }\n",
             "children": [
                 {
                     "type": "providers",
@@ -369,6 +502,9 @@
                     "elements": [
                         {
                             "name": "AppComponent"
+                        },
+                        {
+                            "name": "ChromajsViewComponent"
                         }
                     ]
                 },
@@ -545,6 +681,26 @@
                 "deprecationMessage": "",
                 "type": "Story<Page>",
                 "defaultValue": "(args: Page) => ({\n  props: args,\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/chromajs-view/chromajs-view.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<ChromajsViewComponent>",
+                "defaultValue": "(args: ChromajsViewComponent) => ({\n  props: args,\n})"
+            },
+            {
+                "name": "Typical",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/chromajs-view/chromajs-view.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
             }
         ],
         "functions": [],
@@ -711,6 +867,28 @@
                     "type": "Story<Page>",
                     "defaultValue": "(args: Page) => ({\n  props: args,\n})"
                 }
+            ],
+            "src/app/chromajs-view/chromajs-view.stories.ts": [
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/chromajs-view/chromajs-view.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<ChromajsViewComponent>",
+                    "defaultValue": "(args: ChromajsViewComponent) => ({\n  props: args,\n})"
+                },
+                {
+                    "name": "Typical",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/chromajs-view/chromajs-view.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                }
             ]
         },
         "groupedFunctions": {},
@@ -719,7 +897,7 @@
     },
     "routes": [],
     "coverage": {
-        "count": 4,
+        "count": 3,
         "status": "low",
         "files": [
             {
@@ -729,6 +907,35 @@
                 "name": "AppComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/chromajs-view/chromajs-view.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ChromajsViewComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/chromajs-view/chromajs-view.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/chromajs-view/chromajs-view.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Typical",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {
