@@ -9,6 +9,10 @@
   --headerFont: Georgia;
   --bodyFont: "Atkinson Hyperlegible", "Segoe UI", Tahoma, Verdana, sans-serif;
   --codeFont: "Source Code Pro";
+
+  --headerColor: black;
+  --bodyColor: black;
+  --tertiaryTextColor: black;
 }
 
 h1,
@@ -16,22 +20,26 @@ h2,
 h3,
 h4,
 th {
+  color: var(--headerColor);
   font-family: var(--headerFont);
 }
 
 p,
 li,
 td {
+  color: var(--bodyColor);
   font-family: var(--bodyFont);
   font-size: var(--baseFontSize);
 }
 
 code {
+  color: var(--bodyColor);
   font-family: var(--codeFont);
   font-size: var(--baseFontSize);
 }
 
 sub,
 sup {
+  color: var(--tertiaryTextColor);
   font-size: var(--minFontSize);
 }
