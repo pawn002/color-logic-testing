@@ -1,1 +1,37 @@
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+  --minFontSize: 11pt;
+  --baseFontSize: 14pt;
+  --largeBoldFontSize: 14pt;
+  --largeNormalFontSize: 18pt;
+
+  --headerFont: Georgia;
+  --bodyFont: "Atkinson Hyperlegible", "Segoe UI", Tahoma, Verdana, sans-serif;
+  --codeFont: "Source Code Pro";
+}
+
+h1,
+h2,
+h3,
+h4,
+th {
+  font-family: var(--headerFont);
+}
+
+p,
+li,
+td {
+  font-family: var(--bodyFont);
+  font-size: var(--baseFontSize);
+}
+
+code {
+  font-family: var(--codeFont);
+  font-size: var(--baseFontSize);
+}
+
+sub,
+sup {
+  font-size: var(--minFontSize);
+}
