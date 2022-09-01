@@ -52,7 +52,7 @@ export class ColorUtilService {
 
     // using a create a ramp
     // create all colors
-    const numVariants = 256;
+    const numVariants = 20;
     const interval = 1 / numVariants;
     let initGreys = [];
     let greyVariants: ApcaColorVariantsObj = {};
