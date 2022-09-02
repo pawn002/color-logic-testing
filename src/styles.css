@@ -15,6 +15,10 @@
   --tertiaryTextColor: black;
 }
 
+body {
+  margin: 1rem 4rem 2rem 6rem;
+}
+
 h1,
 h2,
 h3,
@@ -32,6 +36,22 @@ td {
   font-size: var(--baseFontSize);
 }
 
+table {
+  border-collapse: collapse;
+}
+td,
+th {
+  text-align: left;
+  padding: 1ch;
+}
+th {
+  border-bottom: 2px var(--tertiaryTextColor) solid;
+  border-right: 2px var(--tertiaryTextColor) solid;
+}
+td {
+  border: 1px var(--tertiaryTextColor) solid;
+}
+
 code {
   color: var(--bodyColor);
   font-family: var(--codeFont);
@@ -42,4 +62,21 @@ sub,
 sup {
   color: var(--tertiaryTextColor);
   font-size: var(--minFontSize);
+}
+
+.fluent-body {
+  color: var(--bodyColor);
+}
+.fluent-body.normal {
+  font-size: 14px;
+  font-weight: 400;
+}
+.fluent-body.light {
+  font-size: 18px;
+  font-weight: 300;
+}
+
+.fluent-non-body {
+  font-size: 24px;
+  font-weight: 200;
 }

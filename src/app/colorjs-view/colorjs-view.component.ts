@@ -19,7 +19,7 @@ export class ColorjsViewComponent implements OnInit {
 
   adjustBodyColor() {
     let root = document.documentElement;
-    root.style.setProperty('--headerColor', this.greys['90'][0]);
+    root.style.setProperty('--bodyColor', this.greys['90'][0]);
   }
 
   adjustTertiaryTextColor() {

@@ -7,6 +7,108 @@
 
   <code>npm install colorjs.io</code>
 
+  <h2>Treatment Tables</h2>
+
+  <ul>
+    <li>75+ is for body and block text</li>
+    <li>60 is for non-body and non-block text that you want people to read.</li>
+    <li>
+      45 is for Headlines and art (smallest details >= 4px in smallest
+      dimesnion) that you want people to read.
+    </li>
+    <li>
+      30 is for any other text not listed previously like disabled element text.
+      Mostly Solid art too like various graph elements (smallest details >=
+      10px).
+    </li>
+    <li>
+      15 is absolute minimum that needs to be discernable i.e not invisible.
+      Smallest details >= 15px.
+    </li>
+  </ul>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Font Size (px)</th>
+        <th>200</th>
+        <th>300</th>
+        <th>400</th>
+        <th>500</th>
+        <th>600</th>
+        <th>700</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>12</th>
+        <td></td>
+        <td></td>
+        <td>90 (non-body)</td>
+      </tr>
+      <tr>
+        <th>14</th>
+        <td></td>
+        <td></td>
+        <td>90</td>
+        <td></td>
+        <td></td>
+        <td>75</td>
+      </tr>
+      <tr>
+        <th>15</th>
+        <td></td>
+        <td></td>
+        <td>75 (non-body)</td>
+      </tr>
+      <tr>
+        <th>16</th>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>75</td>
+        <td></td>
+        <td>60</td>
+      </tr>
+
+      <tr>
+        <th>18</th>
+        <td></td>
+        <td>90</td>
+        <td>75</td>
+        <td></td>
+        <td>60</td>
+      </tr>
+      <tr>
+        <th>21</th>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>60</td>
+      </tr>
+
+      <tr>
+        <th>24</th>
+        <td>90</td>
+        <td>75</td>
+        <td>60</td>
+        <td></td>
+        <td></td>
+        <td>45</td>
+      </tr>
+      <tr>
+        <th>36</th>
+        <td></td>
+        <td>60</td>
+        <td>45</td>
+      </tr>
+      <tr>
+        <th>48</th>
+        <td>60</td>
+      </tr>
+    </tbody>
+  </table>
+
   <h2>APCA Colors</h2>
 
   <h3>90</h3>
@@ -38,7 +140,7 @@
   <div
     *ngFor="let item of greys['45']"
     [style.backgroundColor]="item"
-    class="swatch"
+    class="swatch small"
   ></div>
 
   <h3>30</h3>
@@ -46,7 +148,7 @@
   <div
     *ngFor="let item of greys['30']"
     [style.backgroundColor]="item"
-    class="swatch"
+    class="swatch medium"
   ></div>
 
   <h3>15</h3>
@@ -54,7 +156,7 @@
   <div
     *ngFor="let item of greys['15']"
     [style.backgroundColor]="item"
-    class="swatch"
+    class="swatch large"
   ></div>
 </main>
 
