@@ -9,6 +9,8 @@
 
   <h2>Treatment Tables</h2>
 
+  <p>Based on bronze guidance.</p>
+
   <ul>
     <li>75+ is for body and block text</li>
     <li>60 is for non-body and non-block text that you want people to read.</li>
@@ -109,8 +111,15 @@
     </tbody>
   </table>
 
-  <h2>APCA Colors</h2>
+  <h2>APCA Colors, Minimum Object Size</h2>
 
+  <h3>100+</h3>
+
+  <div
+    *ngFor="let item of greys['100']"
+    [style.backgroundColor]="item"
+    class="swatch"
+  ></div>
   <h3>90</h3>
 
   <div

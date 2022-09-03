@@ -80,6 +80,12 @@ export class ColorUtilService {
       initGreys,
       bkgdColor,
       45,
+      55
+    );
+    greyVariants['55'] = this.filterAndFormatColors(
+      initGreys,
+      bkgdColor,
+      55,
       60
     );
     greyVariants['60'] = this.filterAndFormatColors(
@@ -98,6 +104,12 @@ export class ColorUtilService {
       initGreys,
       bkgdColor,
       90,
+      100
+    );
+    greyVariants['100'] = this.filterAndFormatColors(
+      initGreys,
+      bkgdColor,
+      100,
       999
     );
 
