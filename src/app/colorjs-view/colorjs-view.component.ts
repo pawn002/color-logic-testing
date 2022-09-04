@@ -14,7 +14,7 @@ export class ColorjsViewComponent implements OnInit, AfterViewInit {
 
   adjustHeaderColor() {
     let root = document.documentElement;
-    root.style.setProperty('--headerColor', this.greys['75'][0]);
+    root.style.setProperty('--headerColor', this.greys['90'][0]);
   }
 
   adjustBodyColor() {

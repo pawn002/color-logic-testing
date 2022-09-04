@@ -19,6 +19,8 @@ export class ColorUtilService {
 
   greyRamp = this.cjsWhite.range(this.cjsBlack, { space: 'oklab' });
 
+  apcaVals = [15, 30, 33, 35, 40, 45, 50, 55, 60, 70, 75, 90, 100, 106];
+
   colorAsHex(color: any): string {
     let hex: string;
 
@@ -47,15 +49,23 @@ export class ColorUtilService {
     return group;
   }
 
+  assignAspcaValKeys(object: ApcaColorVariantsObj) {
+    this.apcaVals.forEach((val) => {
+      object[val] = [];
+    });
+  }
+
   getGreyForegroundColors(bkgdColor: string): ApcaColorVariantsObj {
     let fgColor: ApcaColorVariantsObj;
 
     // using a create a ramp
     // create all colors
-    const numVariants = 20;
+    const numVariants = 256;
     const interval = 1 / numVariants;
     let initGreys = [];
     let greyVariants: ApcaColorVariantsObj = {};
+
+    this.assignAspcaValKeys(greyVariants);
 
     for (let i = 0; i < numVariants; i++) {
       const grey = this.greyRamp(interval * i);
@@ -64,54 +74,23 @@ export class ColorUtilService {
     }
 
     // filter in usable buckets
-    greyVariants['15'] = this.filterAndFormatColors(
-      initGreys,
-      bkgdColor,
-      15,
-      30
-    );
-    greyVariants['30'] = this.filterAndFormatColors(
-      initGreys,
-      bkgdColor,
-      30,
-      45
-    );
-    greyVariants['45'] = this.filterAndFormatColors(
-      initGreys,
-      bkgdColor,
-      45,
-      55
-    );
-    greyVariants['55'] = this.filterAndFormatColors(
-      initGreys,
-      bkgdColor,
-      55,
-      60
-    );
-    greyVariants['60'] = this.filterAndFormatColors(
-      initGreys,
-      bkgdColor,
-      60,
-      75
-    );
-    greyVariants['75'] = this.filterAndFormatColors(
-      initGreys,
-      bkgdColor,
-      75,
-      90
-    );
-    greyVariants['90'] = this.filterAndFormatColors(
-      initGreys,
-      bkgdColor,
-      90,
-      100
-    );
-    greyVariants['100'] = this.filterAndFormatColors(
-      initGreys,
-      bkgdColor,
-      100,
-      999
-    );
+    for (let i = 0; i < this.apcaVals.length; i++) {
+      const maxApcaVal = 106;
+      const key = this.apcaVals[i];
+      const nextKey =
+        this.apcaVals[i + 1] === maxApcaVal
+          ? maxApcaVal + 1
+          : this.apcaVals[i + 1];
+
+      greyVariants[key] = this.filterAndFormatColors(
+        initGreys,
+        bkgdColor,
+        key,
+        nextKey
+      );
+    }
+
+    // console.table(initGreys);
 
     fgColor = greyVariants;
 
