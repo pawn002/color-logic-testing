@@ -19,7 +19,7 @@ export class ColorUtilService {
 
   greyRamp = this.cjsWhite.range(this.cjsBlack, { space: 'oklab' });
 
-  apcaVals = [15, 30, 33, 35, 40, 45, 50, 55, 60, 70, 75, 90, 100, 106];
+  apcaVals = [15, 30, 33, 35, 38, 40, 43, 45, 50, 55, 60, 70, 75, 90, 100, 106];
 
   colorAsHex(color: any): string {
     let hex: string;
@@ -56,7 +56,7 @@ export class ColorUtilService {
   }
 
   getGreyForegroundColors(bkgdColor: string): ApcaColorVariantsObj {
-    let fgColor: ApcaColorVariantsObj;
+    let fgColors: ApcaColorVariantsObj;
 
     // using a create a ramp
     // create all colors
@@ -90,11 +90,24 @@ export class ColorUtilService {
       );
     }
 
-    // console.table(initGreys);
+    fgColors = greyVariants;
 
-    fgColor = greyVariants;
+    return fgColors;
+  }
 
-    return fgColor;
+  getColorForContext(options: {
+    type: 'text' | 'object';
+    font: {
+      size: number;
+      weight: number;
+      body: boolean;
+    };
+  }): string {
+    let color: string;
+
+    color = 'coral';
+
+    return color;
   }
 
   constructor() {}
