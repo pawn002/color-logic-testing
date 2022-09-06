@@ -4,8 +4,8 @@
   --minFontSize: 11pt;
   --baseFontSize: 14pt;
 
-  --headerFont: Georgia;
-  --bodyFont: "Atkinson Hyperlegible", Tahoma, Verdana, sans-serif;
+  --headerFont: Arial, Georgia;
+  --bodyFont: Arial, "Atkinson Hyperlegible", Tahoma, Verdana, sans-serif;
   --codeFont: "Source Code Pro";
 
   /* initial colors; adjusted via js later */

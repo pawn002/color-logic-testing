@@ -21,6 +21,48 @@ export class ColorUtilService {
 
   apcaVals = [15, 30, 33, 35, 38, 40, 43, 45, 50, 55, 60, 70, 75, 90, 100, 106];
 
+  apcaFontLookupTable = {
+    // font-size
+    '9': {},
+    '10.5': {
+      '400': {
+        body: true,
+        bodyAdd: 0,
+        contrast: 100,
+      },
+      '700': {
+        body: true,
+        bodyAdd: 0,
+        contrast: 75,
+      },
+    },
+    '11.25': {
+      '400': { body: true, bodyAdd: 0, contrast: 100 },
+      '700': { body: true, bodyAdd: 15, contrast: 70 },
+    },
+    '12': {
+      '400': { body: true, bodyAdd: 0, contrast: 90 },
+      '700': { body: true, bodyAdd: 15, contrast: 60 },
+    },
+    '13.5': {
+      '400': { body: true, bodyAdd: 0, contrast: 75 },
+      '700': { body: true, bodyAdd: 15, contrast: 55 },
+    },
+    '15.75': {},
+    '18': {},
+    '21': {},
+    '24': {},
+    '27': {
+      '400': { body: true, bodyAdd: 15, contrast: 45 },
+      '700': { body: true, bodyAdd: 15, contrast: 38 },
+    },
+    '31.5': {},
+    '36': {},
+    '45': {},
+    '54': {},
+    '72': {},
+  };
+
   colorAsHex(color: any): string {
     let hex: string;
 
@@ -95,19 +137,46 @@ export class ColorUtilService {
     return fgColors;
   }
 
-  getColorForContext(options: {
-    type: 'text' | 'object';
+  getFontColors(options: {
     font: {
       size: number;
       weight: number;
       body: boolean;
     };
-  }): string {
-    let color: string;
+  }): Array<string> {
+    let color: Array<string>;
 
-    color = 'coral';
+    color = [];
 
     return color;
+  }
+
+  getObjectColors(
+    bkgdColor: string,
+    options: { minDimension: number }
+  ): Array<string> {
+    let objectColors: Array<string> = [];
+
+    const o = options;
+    const dimension = o.minDimension;
+
+    let contrast = 100;
+
+    if (dimension <= 15) {
+      contrast = 15;
+    }
+    if (dimension <= 10) {
+      contrast = 30;
+    }
+    if (dimension <= 4) {
+      contrast = 45;
+    }
+
+    const colors = this.getGreyForegroundColors(bkgdColor);
+
+    objectColors = contrast ? colors[contrast] : objectColors;
+
+    return objectColors;
   }
 
   constructor() {}
