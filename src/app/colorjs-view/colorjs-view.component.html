@@ -3,9 +3,53 @@
 
   <p>Color library created by Lea Verou<sup>a</sup></p>
 
-  <h2>Install</h2>
+  <h2>Install and Import</h2>
 
-  <code>npm install colorjs.io</code>
+  <p>
+    <code>npm install colorjs.io</code>
+  </p>
+
+  <p>
+    <code>import Color from 'colorjs.io'</code>
+  </p>
+
+  <h2>Text Examples<sub>using reference Font "Arial"</sub></h2>
+
+  <h3>By Font Size</h3>
+
+  <h4>14px</h4>
+  <div class="example-area">
+    <p id="s14-400" class="w400">
+      APCA reports lightness contrast as an Lc value from Lc 0 to Lc 106 for
+      dark text on a light background, and Lc 0 to Lc -108 for light text on a
+      dark background (dark mode). The minus sign merely indicates negative
+      contrast, which means light text on a dark background.
+    </p>
+
+    <p id="s14-700" class="w700">
+      APCA reports lightness contrast as an Lc value from Lc 0 to Lc 106 for
+      dark text on a light background, and Lc 0 to Lc -108 for light text on a
+      dark background (dark mode). The minus sign merely indicates negative
+      contrast, which means light text on a dark background.
+    </p>
+  </div>
+
+  <h4>21px</h4>
+  <div class="example-area">
+    <p id="s21-400" class="w400" [style.fontSize]="'21px'">
+      APCA reports lightness contrast as an Lc value from Lc 0 to Lc 106 for
+      dark text on a light background, and Lc 0 to Lc -108 for light text on a
+      dark background (dark mode). The minus sign merely indicates negative
+      contrast, which means light text on a dark background.
+    </p>
+
+    <p id="s21-700" class="w700" [style.fontSize]="'21px'">
+      APCA reports lightness contrast as an Lc value from Lc 0 to Lc 106 for
+      dark text on a light background, and Lc 0 to Lc -108 for light text on a
+      dark background (dark mode). The minus sign merely indicates negative
+      contrast, which means light text on a dark background.
+    </p>
+  </div>
 
   <h2>APCA Colors, Minimum Object Size</h2>
 

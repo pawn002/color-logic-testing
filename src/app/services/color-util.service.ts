@@ -20,7 +20,9 @@ export class ColorUtilService {
 
   greyRamp = this.cjsWhite.range(this.cjsBlack, { space: 'oklab' });
 
-  apcaVals = [15, 30, 33, 35, 38, 40, 43, 45, 50, 55, 60, 70, 75, 90, 100, 106];
+  apcaVals = [
+    15, 30, 33, 35, 38, 40, 43, 45, 50, 55, 60, 65, 70, 75, 90, 100, 106,
+  ];
 
   apcaFontLookupTable = {
     // font-size

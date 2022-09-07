@@ -32,6 +32,16 @@ export class ColorjsViewComponent implements OnInit, AfterViewInit {
     root.style.setProperty('--objectColor', this.greys['15'][0]);
   }
 
+  adjustElementColor(id: string, color: string) {
+    const elem = document.getElementById(id);
+
+    if (elem) {
+      elem.style.color = color;
+    } else {
+      alert('no elem for: ' + id);
+    }
+  }
+
   constructor(private cus: ColorUtilService) {
     this.greys = this.cus.getGreyForegroundColors('white');
   }
@@ -43,5 +53,11 @@ export class ColorjsViewComponent implements OnInit, AfterViewInit {
     this.adjustBodyColor();
     this.adjustTertiaryTextColor();
     this.adjustObjectColor();
+
+    this.adjustElementColor('s14-400', this.greys['100'][0]);
+    this.adjustElementColor('s14-700', this.greys['75'][0]);
+
+    this.adjustElementColor('s21-400', this.greys['70'][0]);
+    this.adjustElementColor('s21-700', this.greys['65'][0]);
   }
 }

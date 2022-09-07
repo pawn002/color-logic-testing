@@ -34,11 +34,13 @@ body {
 h1,
 h2,
 h3,
-h4,
-th {
+h4 {
   color: var(--headerColor);
   font-family: var(--headerFont);
-  font-weight: 300;
+  font-weight: 400;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
 }
 
 h1 {
@@ -93,8 +95,34 @@ sup {
   font-size: var(--minFontSize) !important;
   font-weight: 400;
   font-family: var(--bodyFont);
+  /* line-height: 0; */
 }
 
 hr {
   border-color: var(--objectColor);
+}
+
+.w400 {
+  font-weight: 400;
+}
+.w500 {
+  font-weight: 500;
+}
+.w600 {
+  font-weight: 600;
+}
+.w700 {
+  font-weight: 700;
+}
+
+.example-area {
+  border: var(--objectColor) 15px solid;
+  padding: 1rem 3rem;
+}
+.example-area * {
+  color: purple;
+  font-family: var(--standardFont) !important;
+}
+.example-area p {
+  font-size: 10.5pt;
 }
