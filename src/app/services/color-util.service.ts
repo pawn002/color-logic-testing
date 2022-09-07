@@ -13,9 +13,9 @@ export interface ApcaColorVariantsObj {
   providedIn: 'root',
 })
 export class ColorUtilService {
-  baseWhite = '#ffffff';
+  baseWhite = 'wheat';
   cjsWhite = new Color(this.baseWhite);
-  baseBlack = '#000000';
+  baseBlack = '#28231d';
   cjsBlack = new Color(this.baseBlack);
 
   greyRamp = this.cjsWhite.range(this.cjsBlack, { space: 'oklab' });

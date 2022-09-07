@@ -12,6 +12,12 @@ import {
 export class ColorjsViewComponent implements OnInit, AfterViewInit {
   greys: ApcaColorVariantsObj = {};
 
+  setbkgdColor() {
+    let root = document.documentElement;
+
+    root.style.setProperty('--bkgdColor', this.cus.baseWhite);
+  }
+
   adjustHeaderColor() {
     let root = document.documentElement;
     root.style.setProperty('--headerColor', this.greys['90'][0]);
@@ -49,6 +55,8 @@ export class ColorjsViewComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
+    this.setbkgdColor();
+
     this.adjustHeaderColor();
     this.adjustBodyColor();
     this.adjustTertiaryTextColor();
