@@ -53,26 +53,10 @@
 
   <h2>APCA Colors, Minimum Object Size</h2>
 
-  <h3>100+</h3>
-
-  <div
-    *ngFor="let item of greys['100']"
-    [style.backgroundColor]="item"
-    class="swatch"
-  ></div>
-
   <h3>90<sub>equiv. WCAG 2.1 7</sub></h3>
 
   <div
     *ngFor="let item of greys['90']"
-    [style.backgroundColor]="item"
-    class="swatch"
-  ></div>
-
-  <h3>75<sub>equiv. WCAG 2.1 4.5</sub></h3>
-
-  <div
-    *ngFor="let item of greys['75']"
     [style.backgroundColor]="item"
     class="swatch"
   ></div>
@@ -82,7 +66,14 @@
   <div
     *ngFor="let item of greys['60']"
     [style.backgroundColor]="item"
-    class="swatch"
+    class="swatch px-2"
+  ></div>
+
+  <h3>50</h3>
+  <div
+    *ngFor="let item of greys['50']"
+    [style.backgroundColor]="item"
+    class="swatch px-3"
   ></div>
 
   <h3>45</h3>
@@ -90,7 +81,7 @@
   <div
     *ngFor="let item of greys['45']"
     [style.backgroundColor]="item"
-    class="swatch small"
+    class="swatch px-4"
   ></div>
 
   <h3>30</h3>
@@ -98,7 +89,23 @@
   <div
     *ngFor="let item of greys['30']"
     [style.backgroundColor]="item"
-    class="swatch medium"
+    class="swatch px-6"
+  ></div>
+
+  <h3>25</h3>
+
+  <div
+    *ngFor="let item of greys['25']"
+    [style.backgroundColor]="item"
+    class="swatch px-8"
+  ></div>
+
+  <h3>20</h3>
+
+  <div
+    *ngFor="let item of greys['20']"
+    [style.backgroundColor]="item"
+    class="swatch px-10"
   ></div>
 
   <h3>15</h3>
@@ -106,7 +113,7 @@
   <div
     *ngFor="let item of greys['15']"
     [style.backgroundColor]="item"
-    class="swatch large"
+    class="swatch px-15"
   ></div>
 </main>
 

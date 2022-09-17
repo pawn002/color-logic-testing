@@ -1,17 +1,32 @@
 .swatch {
-  width: 40px;
+  width: 15px;
   height: 1px;
   background-color: coral;
   display: inline-block;
-  margin-right: 1rem;
+  margin-right: 20px;
 }
 
-.swatch.small {
+.swatch.px-1 {
+  height: 1px;
+}
+.swatch.px-2 {
+  height: 2px;
+}
+.swatch.px-3 {
+  height: 3px;
+}
+.swatch.px-4 {
   height: 4px;
 }
-.swatch.medium {
+.swatch.px-6 {
+  height: 6px;
+}
+.swatch.px-8 {
+  height: 8px;
+}
+.swatch.px-10 {
   height: 10px;
 }
-.swatch.large {
+.swatch.px-15 {
   height: 15px;
 }

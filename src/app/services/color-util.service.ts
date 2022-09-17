@@ -13,58 +13,20 @@ export interface ApcaColorVariantsObj {
   providedIn: 'root',
 })
 export class ColorUtilService {
-  baseWhite = 'wheat';
-  cjsWhite = new Color(this.baseWhite);
+  baseWhite = 'white';
   baseBlack = '#28231d';
+  cjsWhite = new Color(this.baseWhite);
   cjsBlack = new Color(this.baseBlack);
 
   greyRamp = this.cjsWhite.range(this.cjsBlack, { space: 'oklab' });
 
-  apcaVals = [
-    15, 30, 33, 35, 38, 40, 43, 45, 50, 55, 60, 65, 70, 75, 90, 100, 106,
-  ];
+  apcaVals: Array<number> = [];
 
-  apcaFontLookupTable = {
-    // font-size
-    '9': {},
-    '10.5': {
-      '400': {
-        body: true,
-        bodyAdd: 0,
-        contrast: 100,
-      },
-      '700': {
-        body: true,
-        bodyAdd: 0,
-        contrast: 75,
-      },
-    },
-    '11.25': {
-      '400': { body: true, bodyAdd: 0, contrast: 100 },
-      '700': { body: true, bodyAdd: 15, contrast: 70 },
-    },
-    '12': {
-      '400': { body: true, bodyAdd: 0, contrast: 90 },
-      '700': { body: true, bodyAdd: 15, contrast: 60 },
-    },
-    '13.5': {
-      '400': { body: true, bodyAdd: 0, contrast: 75 },
-      '700': { body: true, bodyAdd: 15, contrast: 55 },
-    },
-    '15.75': {},
-    '18': {},
-    '21': {},
-    '24': {},
-    '27': {
-      '400': { body: true, bodyAdd: 15, contrast: 45 },
-      '700': { body: true, bodyAdd: 15, contrast: 38 },
-    },
-    '31.5': {},
-    '36': {},
-    '45': {},
-    '54': {},
-    '72': {},
-  };
+  populateApcaVals() {
+    for (let i = 0; i <= 108; i++) {
+      this.apcaVals.push(i);
+    }
+  }
 
   colorAsHex(color: any): string {
     let hex: string;
@@ -120,7 +82,7 @@ export class ColorUtilService {
 
     // filter in usable buckets
     for (let i = 0; i < this.apcaVals.length; i++) {
-      const maxApcaVal = 106;
+      const maxApcaVal = 108;
       const key = this.apcaVals[i];
       const nextKey =
         this.apcaVals[i + 1] === maxApcaVal
@@ -163,24 +125,32 @@ export class ColorUtilService {
     const o = options;
     const dimension = o.minDimension;
 
-    let contrast = 100;
+    let contrast: number = 90;
 
-    if (dimension <= 15) {
-      contrast = 15;
-    }
-    if (dimension <= 10) {
-      contrast = 30;
-    }
-    if (dimension <= 4) {
-      contrast = 45;
-    }
+    const cSlope = (15 - 45) / (15 - 4);
+
+    const yInter = 45 - 4 * cSlope;
+
+    const objContrast = (size: number) => {
+      return Math.round(size * cSlope + yInter);
+    };
+
+    contrast = objContrast(dimension);
+
+    contrast = contrast < 15 ? 15 : contrast;
+
+    console.log('objSize ' + dimension, 'contrast ' + contrast);
 
     const colors = this.getGreyForegroundColors(bkgdColor);
+
+    console.log(colors);
 
     objectColors = contrast ? colors[contrast] : objectColors;
 
     return objectColors;
   }
 
-  constructor() {}
+  constructor() {
+    this.populateApcaVals();
+  }
 }
