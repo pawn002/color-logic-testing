@@ -127,23 +127,22 @@ export class ColorUtilService {
 
     let contrast: number = 90;
 
-    const cSlope = (15 - 45) / (15 - 4);
+    const cSlope = 96;
 
-    const yInter = 45 - 4 * cSlope;
+    const power = -0.654;
 
     const objContrast = (size: number) => {
-      return Math.round(size * cSlope + yInter);
+      return Math.round(Math.pow(size, power) * cSlope);
     };
 
     contrast = objContrast(dimension);
 
     contrast = contrast < 15 ? 15 : contrast;
+    contrast = contrast > 100 ? 100 : contrast;
 
     console.log('objSize ' + dimension, 'contrast ' + contrast);
 
     const colors = this.getGreyForegroundColors(bkgdColor);
-
-    console.log(colors);
 
     objectColors = contrast ? colors[contrast] : objectColors;
 
