@@ -52,12 +52,7 @@ export class ColorjsViewComponent implements OnInit, AfterViewInit {
     this.greys = this.cus.getGreyForegroundColors('white');
   }
 
-  ngOnInit(): void {
-    this.cus.getObjectColors('white', { minDimension: 4 });
-    // this.cus.getObjectColors('white', { minDimension: 4 });
-    // this.cus.getObjectColors('white', { minDimension: 10 });
-    // this.cus.getObjectColors('white', { minDimension: 15 });
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     this.setbkgdColor();

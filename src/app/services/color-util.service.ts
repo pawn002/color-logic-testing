@@ -127,9 +127,9 @@ export class ColorUtilService {
 
     let contrast: number = 90;
 
-    const cSlope = 96;
+    const cSlope = 94.3;
 
-    const power = -0.654;
+    const power = -0.595;
 
     const objContrast = (size: number) => {
       return Math.round(Math.pow(size, power) * cSlope);
