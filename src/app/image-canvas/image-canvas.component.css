@@ -1,0 +1,15 @@
+:host {
+  position: absolute;
+  border: coral 1px dashed;
+  width: inherit;
+  height: inherit;
+}
+
+:host * {
+  border: red 1px solid;
+}
+
+canvas {
+  width: inherit;
+  height: inherit;
+}

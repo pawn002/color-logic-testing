@@ -1,16 +1,14 @@
 import { moduleMetadata } from '@storybook/angular';
 import { CommonModule } from '@angular/common';
 import type { Story, Meta } from '@storybook/angular';
-
-import { ImageCanvasComponent } from '../image-canvas/image-canvas.component';
-import { ChromajsViewComponent } from './chromajs-view.component';
+import { ImageCanvasComponent } from './image-canvas.component';
 
 export default {
-  title: 'App/chroma.js view',
-  component: ChromajsViewComponent,
+  title: 'App/Image Canvas',
+  component: ImageCanvasComponent,
   decorators: [
     moduleMetadata({
-      declarations: [ImageCanvasComponent],
+      declarations: [],
       imports: [CommonModule],
     }),
   ],
@@ -20,9 +18,7 @@ export default {
   },
 } as Meta;
 
-const Template: Story<ChromajsViewComponent> = (
-  args: ChromajsViewComponent
-) => ({
+const Template: Story<ImageCanvasComponent> = (args: ImageCanvasComponent) => ({
   props: args,
 });
 

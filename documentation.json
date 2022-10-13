@@ -948,6 +948,68 @@
             "stylesData": ""
         },
         {
+            "name": "ImageCanvasComponent",
+            "id": "component-ImageCanvasComponent-887a3e959622946d125238873b3c0e55c7f7c38eda7bfe1744624d5b4a50e9c18fbfdf273c144de052af60d10259daaf9b61febe813fa86c9d4d15b92c317e11",
+            "file": "src/app/image-canvas/image-canvas.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-image-canvas",
+            "styleUrls": [
+                "./image-canvas.component.css"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./image-canvas.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 12,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-image-canvas',\n  templateUrl: './image-canvas.component.html',\n  styleUrls: ['./image-canvas.component.css']\n})\nexport class ImageCanvasComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ":host {\r\n  border: coral 3px dashed;\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  height: 100%;\r\n}\r\n\r\n:host * {\r\n  border: red 1px solid;\r\n}\r\n\r\ncanvas {\r\n}\r\n",
+                    "styleUrl": "./image-canvas.component.css"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 8
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<h2>image canvas</h2>\n\n<canvas></canvas>\n"
+        },
+        {
             "name": "PageComponent",
             "id": "component-PageComponent-7126d8c2607c946741c651482413b43feb72b2d63cac9d3ac173fde206a5e635eb4cdbf7ca7ac9327c7d4d05cf7ef619144c34c11609ad677081d0ee4e855064",
             "file": "src/stories/page.component.ts",
@@ -1031,13 +1093,13 @@
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-8e3c3c06223ee5c4daeb89c911c975b581f34c5fc9b21d3fc784a32cef0e4530c5ebbb14dd1b05962b27e155298f6842913328e6ba29d0e66c2ea5d166741715",
+            "id": "module-AppModule-3154df648e49b4905280892f1bca418caa3f6c36ec465a5442f578ec3865933499646b2a69120c2b2821f46bc8e46f1dd6b80d90593e274f784a69128bdd9b4f",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\r\nimport { BrowserModule } from '@angular/platform-browser';\r\n\r\nimport { AppComponent } from './app.component';\r\nimport { ChromajsViewComponent } from './chromajs-view/chromajs-view.component';\r\nimport { ColorjsViewComponent } from './colorjs-view/colorjs-view.component';\r\n\r\n@NgModule({\r\n  declarations: [\r\n    AppComponent,\r\n    ChromajsViewComponent,\r\n    ColorjsViewComponent\r\n  ],\r\n  imports: [\r\n    BrowserModule\r\n  ],\r\n  providers: [],\r\n  bootstrap: [AppComponent]\r\n})\r\nexport class AppModule { }\r\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\r\nimport { BrowserModule } from '@angular/platform-browser';\r\n\r\nimport { AppComponent } from './app.component';\r\nimport { ChromajsViewComponent } from './chromajs-view/chromajs-view.component';\r\nimport { ColorjsViewComponent } from './colorjs-view/colorjs-view.component';\nimport { ImageCanvasComponent } from './image-canvas/image-canvas.component';\r\n\r\n@NgModule({\r\n  declarations: [\r\n    AppComponent,\r\n    ChromajsViewComponent,\r\n    ColorjsViewComponent,\r\n    ImageCanvasComponent\r\n  ],\r\n  imports: [\r\n    BrowserModule\r\n  ],\r\n  providers: [],\r\n  bootstrap: [AppComponent]\r\n})\r\nexport class AppModule { }\r\n",
             "children": [
                 {
                     "type": "providers",
@@ -1054,6 +1116,9 @@
                         },
                         {
                             "name": "ColorjsViewComponent"
+                        },
+                        {
+                            "name": "ImageCanvasComponent"
                         }
                     ]
                 },
@@ -1242,10 +1307,30 @@
                 "defaultValue": "(args: ChromajsViewComponent) => ({\r\n  props: args,\r\n})"
             },
             {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/image-canvas/image-canvas.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<ImageCanvasComponent>",
+                "defaultValue": "(args: ImageCanvasComponent) => ({\r\n  props: args,\r\n})"
+            },
+            {
                 "name": "Typical",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/app/chromajs-view/chromajs-view.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Typical",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/image-canvas/image-canvas.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -1438,6 +1523,28 @@
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 }
+            ],
+            "src/app/image-canvas/image-canvas.stories.ts": [
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/image-canvas/image-canvas.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<ImageCanvasComponent>",
+                    "defaultValue": "(args: ImageCanvasComponent) => ({\r\n  props: args,\r\n})"
+                },
+                {
+                    "name": "Typical",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/image-canvas/image-canvas.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                }
             ]
         },
         "groupedFunctions": {},
@@ -1446,7 +1553,7 @@
     },
     "routes": [],
     "coverage": {
-        "count": 3,
+        "count": 2,
         "status": "low",
         "files": [
             {
@@ -1494,6 +1601,35 @@
                 "name": "ColorjsViewComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/11",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/image-canvas/image-canvas.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ImageCanvasComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/image-canvas/image-canvas.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/image-canvas/image-canvas.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Typical",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {
