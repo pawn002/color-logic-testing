@@ -1,8 +1,8 @@
 :host {
-  position: absolute;
+  display: inline-block;
   border: coral 1px dashed;
-  width: inherit;
-  height: inherit;
+  width: auto;
+  height: auto;
 }
 
 :host * {
@@ -10,6 +10,6 @@
 }
 
 canvas {
-  width: inherit;
-  height: inherit;
+  /* width: inherit; */
+  /* height: inherit; */
 }
