@@ -3,16 +3,16 @@
     "interfaces": [
         {
             "name": "ApcaColorVariantsObj",
-            "id": "interface-ApcaColorVariantsObj-50f77d8c9f3637a812178a92532551a101f3703bc30de8e3f10260232ed784a3684ba51e3ce3a8d089cb1687c98283f6a1a1a548cae8563c788daaff3a7bae6c",
+            "id": "interface-ApcaColorVariantsObj-3d440e19a096d69aafbd0e6150a37e26247560299c14261161f4208a677c78ce2d324eee3b502663be9a8bb58bfcaa588206f013f6be1dfb87148703440bec4f",
             "file": "src/app/services/color-util.service.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { Injectable } from '@angular/core';\r\n\r\nimport { uniq } from 'lodash';\r\n\r\nimport Color from 'colorjs.io';\r\n\r\nexport interface ApcaColorVariantsObj {\r\n  [key: number]: Array<string>;\r\n}\r\n\r\n@Injectable({\r\n  providedIn: 'root',\r\n})\r\nexport class ColorUtilService {\r\n  baseWhite = '#ffffff';\r\n  cjsWhite = new Color(this.baseWhite);\r\n  baseBlack = '#000000';\r\n  cjsBlack = new Color(this.baseBlack);\r\n\r\n  greyRamp = this.cjsWhite.range(this.cjsBlack, { space: 'oklab' });\r\n\r\n  apcaVals = [15, 30, 33, 35, 38, 40, 43, 45, 50, 55, 60, 70, 75, 90, 100, 106];\r\n\r\n  apcaFontLookupTable = {\r\n    // font-size\r\n    '9': {},\r\n    '10.5': {\r\n      '400': {\r\n        body: true,\r\n        bodyAdd: 0,\r\n        contrast: 100,\r\n      },\r\n      '700': {\r\n        body: true,\r\n        bodyAdd: 0,\r\n        contrast: 75,\r\n      },\r\n    },\r\n    '11.25': {\r\n      '400': { body: true, bodyAdd: 0, contrast: 100 },\r\n      '700': { body: true, bodyAdd: 15, contrast: 70 },\r\n    },\r\n    '12': {\r\n      '400': { body: true, bodyAdd: 0, contrast: 90 },\r\n      '700': { body: true, bodyAdd: 15, contrast: 60 },\r\n    },\r\n    '13.5': {\r\n      '400': { body: true, bodyAdd: 0, contrast: 75 },\r\n      '700': { body: true, bodyAdd: 15, contrast: 55 },\r\n    },\r\n    '15.75': {},\r\n    '18': {},\r\n    '21': {},\r\n    '24': {},\r\n    '27': {\r\n      '400': { body: true, bodyAdd: 15, contrast: 45 },\r\n      '700': { body: true, bodyAdd: 15, contrast: 38 },\r\n    },\r\n    '31.5': {},\r\n    '36': {},\r\n    '45': {},\r\n    '54': {},\r\n    '72': {},\r\n  };\r\n\r\n  colorAsHex(color: any): string {\r\n    let hex: string;\r\n\r\n    hex = color.to('srgb', { inGamut: true }).toString({ format: 'hex' });\r\n\r\n    return hex;\r\n  }\r\n\r\n  filterAndFormatColors(\r\n    colorCollection: Array<any>,\r\n    bkgdColor: any,\r\n    lowerLimit: number,\r\n    ceiling: number\r\n  ) {\r\n    let group = [];\r\n\r\n    for (let i = 0; i < colorCollection.length; i++) {\r\n      const color = colorCollection[i];\r\n      const apcaContrast = Math.abs(color.contrast(bkgdColor, 'APCA'));\r\n\r\n      if (apcaContrast >= lowerLimit && apcaContrast < ceiling) {\r\n        group.push(this.colorAsHex(color));\r\n      }\r\n    }\r\n\r\n    return group;\r\n  }\r\n\r\n  assignAspcaValKeys(object: ApcaColorVariantsObj) {\r\n    this.apcaVals.forEach((val) => {\r\n      object[val] = [];\r\n    });\r\n  }\r\n\r\n  getGreyForegroundColors(bkgdColor: string): ApcaColorVariantsObj {\r\n    let fgColors: ApcaColorVariantsObj;\r\n\r\n    // using a create a ramp\r\n    // create all colors\r\n    const numVariants = 256;\r\n    const interval = 1 / numVariants;\r\n    let initGreys = [];\r\n    let greyVariants: ApcaColorVariantsObj = {};\r\n\r\n    this.assignAspcaValKeys(greyVariants);\r\n\r\n    for (let i = 0; i < numVariants; i++) {\r\n      const grey = this.greyRamp(interval * i);\r\n\r\n      initGreys.push(grey);\r\n    }\r\n\r\n    // filter in usable buckets\r\n    for (let i = 0; i < this.apcaVals.length; i++) {\r\n      const maxApcaVal = 106;\r\n      const key = this.apcaVals[i];\r\n      const nextKey =\r\n        this.apcaVals[i + 1] === maxApcaVal\r\n          ? maxApcaVal + 1\r\n          : this.apcaVals[i + 1];\r\n\r\n      greyVariants[key] = this.filterAndFormatColors(\r\n        initGreys,\r\n        bkgdColor,\r\n        key,\r\n        nextKey\r\n      );\r\n    }\r\n\r\n    fgColors = greyVariants;\r\n\r\n    return fgColors;\r\n  }\r\n\r\n  getFontColors(options: {\r\n    font: {\r\n      size: number;\r\n      weight: number;\r\n      body: boolean;\r\n    };\r\n  }): Array<string> {\r\n    let color: Array<string>;\r\n\r\n    color = [];\r\n\r\n    return color;\r\n  }\r\n\r\n  getObjectColors(\r\n    bkgdColor: string,\r\n    options: { minDimension: number }\r\n  ): Array<string> {\r\n    let objectColors: Array<string> = [];\r\n\r\n    const o = options;\r\n    const dimension = o.minDimension;\r\n\r\n    let contrast = 100;\r\n\r\n    if (dimension <= 15) {\r\n      contrast = 15;\r\n    }\r\n    if (dimension <= 10) {\r\n      contrast = 30;\r\n    }\r\n    if (dimension <= 4) {\r\n      contrast = 45;\r\n    }\r\n\r\n    const colors = this.getGreyForegroundColors(bkgdColor);\r\n\r\n    objectColors = contrast ? colors[contrast] : objectColors;\r\n\r\n    return objectColors;\r\n  }\r\n\r\n  constructor() {}\r\n}\r\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\r\n\r\nimport { uniq } from 'lodash';\r\n\r\n// import Color from 'colorjs.io';\r\nimport Color from 'colorjs.io';\r\n\r\nexport interface ApcaColorVariantsObj {\r\n  [key: number]: Array<string>;\r\n}\r\n\r\n@Injectable({\r\n  providedIn: 'root',\r\n})\r\nexport class ColorUtilService {\r\n  baseWhite = 'white';\r\n  baseBlack = '#28231d';\r\n  cjsWhite = new Color(this.baseWhite);\r\n  cjsBlack = new Color(this.baseBlack);\r\n\r\n  greyRamp = this.cjsWhite.range(this.cjsBlack, { space: 'oklab' });\r\n\r\n  apcaVals: Array<number> = [];\r\n\r\n  populateApcaVals() {\r\n    for (let i = 0; i <= 108; i++) {\r\n      this.apcaVals.push(i);\r\n    }\r\n  }\r\n\r\n  colorAsHex(color: any): string {\r\n    let hex: string;\r\n\r\n    hex = color.to('srgb', { inGamut: true }).toString({ format: 'hex' });\r\n\r\n    return hex;\r\n  }\r\n\r\n  filterAndFormatColors(\r\n    colorCollection: Array<any>,\r\n    bkgdColor: any,\r\n    lowerLimit: number,\r\n    ceiling: number\r\n  ) {\r\n    let group = [];\r\n\r\n    for (let i = 0; i < colorCollection.length; i++) {\r\n      const color = colorCollection[i];\r\n      const apcaContrast = Math.abs(color.contrast(bkgdColor, 'APCA'));\r\n\r\n      if (apcaContrast >= lowerLimit && apcaContrast < ceiling) {\r\n        group.push(this.colorAsHex(color));\r\n      }\r\n    }\r\n\r\n    return group;\r\n  }\r\n\r\n  assignAspcaValKeys(object: ApcaColorVariantsObj) {\r\n    this.apcaVals.forEach((val) => {\r\n      object[val] = [];\r\n    });\r\n  }\r\n\r\n  getGreyForegroundColors(bkgdColor: string): ApcaColorVariantsObj {\r\n    let fgColors: ApcaColorVariantsObj;\r\n\r\n    // using a create a ramp\r\n    // create all colors\r\n    const numVariants = 256;\r\n    const interval = 1 / numVariants;\r\n    let initGreys = [];\r\n    let greyVariants: ApcaColorVariantsObj = {};\r\n\r\n    this.assignAspcaValKeys(greyVariants);\r\n\r\n    for (let i = 0; i < numVariants; i++) {\r\n      const grey = this.greyRamp(interval * i);\r\n\r\n      initGreys.push(grey);\r\n    }\r\n\r\n    // filter in usable buckets\r\n    for (let i = 0; i < this.apcaVals.length; i++) {\r\n      const maxApcaVal = 108;\r\n      const key = this.apcaVals[i];\r\n      const nextKey =\r\n        this.apcaVals[i + 1] === maxApcaVal\r\n          ? maxApcaVal + 1\r\n          : this.apcaVals[i + 1];\r\n\r\n      greyVariants[key] = this.filterAndFormatColors(\r\n        initGreys,\r\n        bkgdColor,\r\n        key,\r\n        nextKey\r\n      );\r\n    }\r\n\r\n    fgColors = greyVariants;\r\n\r\n    return fgColors;\r\n  }\r\n\r\n  getFontColors(options: {\r\n    font: {\r\n      size: number;\r\n      weight: number;\r\n      body: boolean;\r\n    };\r\n  }): Array<string> {\r\n    let color: Array<string>;\r\n\r\n    color = [];\r\n\r\n    return color;\r\n  }\r\n\r\n  getObjectColors(\r\n    bkgdColor: string,\r\n    options: { minDimension: number }\r\n  ): Array<string> {\r\n    let objectColors: Array<string> = [];\r\n\r\n    const o = options;\r\n    const dimension = o.minDimension;\r\n\r\n    let contrast: number = 90;\r\n\r\n    const cSlope = 94.3;\r\n\r\n    const power = -0.595;\r\n\r\n    const objContrast = (size: number) => {\r\n      return Math.round(Math.pow(size, power) * cSlope);\r\n    };\r\n\r\n    contrast = objContrast(dimension);\r\n\r\n    contrast = contrast < 15 ? 15 : contrast;\r\n    contrast = contrast > 100 ? 100 : contrast;\r\n\r\n    console.log('objSize ' + dimension, 'contrast ' + contrast);\r\n\r\n    const colors = this.getGreyForegroundColors(bkgdColor);\r\n\r\n    objectColors = contrast ? colors[contrast] : objectColors;\r\n\r\n    return objectColors;\r\n  }\r\n\r\n  constructor() {\r\n    this.populateApcaVals();\r\n  }\r\n}\r\n",
             "properties": [],
             "indexSignatures": [
                 {
-                    "id": "index-declaration-50f77d8c9f3637a812178a92532551a101f3703bc30de8e3f10260232ed784a3684ba51e3ce3a8d089cb1687c98283f6a1a1a548cae8563c788daaff3a7bae6c",
+                    "id": "index-declaration-3d440e19a096d69aafbd0e6150a37e26247560299c14261161f4208a677c78ce2d324eee3b502663be9a8bb58bfcaa588206f013f6be1dfb87148703440bec4f",
                     "args": [
                         {
                             "name": "key",
@@ -22,7 +22,7 @@
                         }
                     ],
                     "returnType": "Array<string>",
-                    "line": 7,
+                    "line": 8,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -46,32 +46,22 @@
     "injectables": [
         {
             "name": "ColorUtilService",
-            "id": "injectable-ColorUtilService-50f77d8c9f3637a812178a92532551a101f3703bc30de8e3f10260232ed784a3684ba51e3ce3a8d089cb1687c98283f6a1a1a548cae8563c788daaff3a7bae6c",
+            "id": "injectable-ColorUtilService-3d440e19a096d69aafbd0e6150a37e26247560299c14261161f4208a677c78ce2d324eee3b502663be9a8bb58bfcaa588206f013f6be1dfb87148703440bec4f",
             "file": "src/app/services/color-util.service.ts",
             "properties": [
                 {
-                    "name": "apcaFontLookupTable",
-                    "defaultValue": "{\r\n    // font-size\r\n    '9': {},\r\n    '10.5': {\r\n      '400': {\r\n        body: true,\r\n        bodyAdd: 0,\r\n        contrast: 100,\r\n      },\r\n      '700': {\r\n        body: true,\r\n        bodyAdd: 0,\r\n        contrast: 75,\r\n      },\r\n    },\r\n    '11.25': {\r\n      '400': { body: true, bodyAdd: 0, contrast: 100 },\r\n      '700': { body: true, bodyAdd: 15, contrast: 70 },\r\n    },\r\n    '12': {\r\n      '400': { body: true, bodyAdd: 0, contrast: 90 },\r\n      '700': { body: true, bodyAdd: 15, contrast: 60 },\r\n    },\r\n    '13.5': {\r\n      '400': { body: true, bodyAdd: 0, contrast: 75 },\r\n      '700': { body: true, bodyAdd: 15, contrast: 55 },\r\n    },\r\n    '15.75': {},\r\n    '18': {},\r\n    '21': {},\r\n    '24': {},\r\n    '27': {\r\n      '400': { body: true, bodyAdd: 15, contrast: 45 },\r\n      '700': { body: true, bodyAdd: 15, contrast: 38 },\r\n    },\r\n    '31.5': {},\r\n    '36': {},\r\n    '45': {},\r\n    '54': {},\r\n    '72': {},\r\n  }",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "optional": false,
-                    "description": "",
-                    "line": 24
-                },
-                {
                     "name": "apcaVals",
-                    "defaultValue": "[15, 30, 33, 35, 38, 40, 43, 45, 50, 55, 60, 70, 75, 90, 100, 106]",
+                    "defaultValue": "[]",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "[]",
+                    "type": "Array<number>",
                     "optional": false,
                     "description": "",
-                    "line": 22
+                    "line": 23
                 },
                 {
                     "name": "baseBlack",
-                    "defaultValue": "'#000000'",
+                    "defaultValue": "'#28231d'",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "string",
@@ -81,13 +71,13 @@
                 },
                 {
                     "name": "baseWhite",
-                    "defaultValue": "'#ffffff'",
+                    "defaultValue": "'white'",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 15
+                    "line": 16
                 },
                 {
                     "name": "cjsBlack",
@@ -97,7 +87,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 18
+                    "line": 19
                 },
                 {
                     "name": "cjsWhite",
@@ -107,7 +97,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 16
+                    "line": 18
                 },
                 {
                     "name": "greyRamp",
@@ -117,7 +107,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 20
+                    "line": 21
                 }
             ],
             "methods": [
@@ -134,7 +124,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 94,
+                    "line": 59,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -162,7 +152,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 66,
+                    "line": 31,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -208,7 +198,7 @@
                     "optional": false,
                     "returnType": "{}",
                     "typeParameters": [],
-                    "line": 74,
+                    "line": 39,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -263,7 +253,7 @@
                     "optional": false,
                     "returnType": "Array<string>",
                     "typeParameters": [],
-                    "line": 140,
+                    "line": 105,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -291,7 +281,7 @@
                     "optional": false,
                     "returnType": "ApcaColorVariantsObj",
                     "typeParameters": [],
-                    "line": 100,
+                    "line": 65,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -325,7 +315,7 @@
                     "optional": false,
                     "returnType": "Array<string>",
                     "typeParameters": [],
-                    "line": 154,
+                    "line": 119,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -348,20 +338,30 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "populateApcaVals",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 25,
+                    "deprecated": false,
+                    "deprecationMessage": ""
                 }
             ],
             "deprecated": false,
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { Injectable } from '@angular/core';\r\n\r\nimport { uniq } from 'lodash';\r\n\r\nimport Color from 'colorjs.io';\r\n\r\nexport interface ApcaColorVariantsObj {\r\n  [key: number]: Array<string>;\r\n}\r\n\r\n@Injectable({\r\n  providedIn: 'root',\r\n})\r\nexport class ColorUtilService {\r\n  baseWhite = '#ffffff';\r\n  cjsWhite = new Color(this.baseWhite);\r\n  baseBlack = '#000000';\r\n  cjsBlack = new Color(this.baseBlack);\r\n\r\n  greyRamp = this.cjsWhite.range(this.cjsBlack, { space: 'oklab' });\r\n\r\n  apcaVals = [15, 30, 33, 35, 38, 40, 43, 45, 50, 55, 60, 70, 75, 90, 100, 106];\r\n\r\n  apcaFontLookupTable = {\r\n    // font-size\r\n    '9': {},\r\n    '10.5': {\r\n      '400': {\r\n        body: true,\r\n        bodyAdd: 0,\r\n        contrast: 100,\r\n      },\r\n      '700': {\r\n        body: true,\r\n        bodyAdd: 0,\r\n        contrast: 75,\r\n      },\r\n    },\r\n    '11.25': {\r\n      '400': { body: true, bodyAdd: 0, contrast: 100 },\r\n      '700': { body: true, bodyAdd: 15, contrast: 70 },\r\n    },\r\n    '12': {\r\n      '400': { body: true, bodyAdd: 0, contrast: 90 },\r\n      '700': { body: true, bodyAdd: 15, contrast: 60 },\r\n    },\r\n    '13.5': {\r\n      '400': { body: true, bodyAdd: 0, contrast: 75 },\r\n      '700': { body: true, bodyAdd: 15, contrast: 55 },\r\n    },\r\n    '15.75': {},\r\n    '18': {},\r\n    '21': {},\r\n    '24': {},\r\n    '27': {\r\n      '400': { body: true, bodyAdd: 15, contrast: 45 },\r\n      '700': { body: true, bodyAdd: 15, contrast: 38 },\r\n    },\r\n    '31.5': {},\r\n    '36': {},\r\n    '45': {},\r\n    '54': {},\r\n    '72': {},\r\n  };\r\n\r\n  colorAsHex(color: any): string {\r\n    let hex: string;\r\n\r\n    hex = color.to('srgb', { inGamut: true }).toString({ format: 'hex' });\r\n\r\n    return hex;\r\n  }\r\n\r\n  filterAndFormatColors(\r\n    colorCollection: Array<any>,\r\n    bkgdColor: any,\r\n    lowerLimit: number,\r\n    ceiling: number\r\n  ) {\r\n    let group = [];\r\n\r\n    for (let i = 0; i < colorCollection.length; i++) {\r\n      const color = colorCollection[i];\r\n      const apcaContrast = Math.abs(color.contrast(bkgdColor, 'APCA'));\r\n\r\n      if (apcaContrast >= lowerLimit && apcaContrast < ceiling) {\r\n        group.push(this.colorAsHex(color));\r\n      }\r\n    }\r\n\r\n    return group;\r\n  }\r\n\r\n  assignAspcaValKeys(object: ApcaColorVariantsObj) {\r\n    this.apcaVals.forEach((val) => {\r\n      object[val] = [];\r\n    });\r\n  }\r\n\r\n  getGreyForegroundColors(bkgdColor: string): ApcaColorVariantsObj {\r\n    let fgColors: ApcaColorVariantsObj;\r\n\r\n    // using a create a ramp\r\n    // create all colors\r\n    const numVariants = 256;\r\n    const interval = 1 / numVariants;\r\n    let initGreys = [];\r\n    let greyVariants: ApcaColorVariantsObj = {};\r\n\r\n    this.assignAspcaValKeys(greyVariants);\r\n\r\n    for (let i = 0; i < numVariants; i++) {\r\n      const grey = this.greyRamp(interval * i);\r\n\r\n      initGreys.push(grey);\r\n    }\r\n\r\n    // filter in usable buckets\r\n    for (let i = 0; i < this.apcaVals.length; i++) {\r\n      const maxApcaVal = 106;\r\n      const key = this.apcaVals[i];\r\n      const nextKey =\r\n        this.apcaVals[i + 1] === maxApcaVal\r\n          ? maxApcaVal + 1\r\n          : this.apcaVals[i + 1];\r\n\r\n      greyVariants[key] = this.filterAndFormatColors(\r\n        initGreys,\r\n        bkgdColor,\r\n        key,\r\n        nextKey\r\n      );\r\n    }\r\n\r\n    fgColors = greyVariants;\r\n\r\n    return fgColors;\r\n  }\r\n\r\n  getFontColors(options: {\r\n    font: {\r\n      size: number;\r\n      weight: number;\r\n      body: boolean;\r\n    };\r\n  }): Array<string> {\r\n    let color: Array<string>;\r\n\r\n    color = [];\r\n\r\n    return color;\r\n  }\r\n\r\n  getObjectColors(\r\n    bkgdColor: string,\r\n    options: { minDimension: number }\r\n  ): Array<string> {\r\n    let objectColors: Array<string> = [];\r\n\r\n    const o = options;\r\n    const dimension = o.minDimension;\r\n\r\n    let contrast = 100;\r\n\r\n    if (dimension <= 15) {\r\n      contrast = 15;\r\n    }\r\n    if (dimension <= 10) {\r\n      contrast = 30;\r\n    }\r\n    if (dimension <= 4) {\r\n      contrast = 45;\r\n    }\r\n\r\n    const colors = this.getGreyForegroundColors(bkgdColor);\r\n\r\n    objectColors = contrast ? colors[contrast] : objectColors;\r\n\r\n    return objectColors;\r\n  }\r\n\r\n  constructor() {}\r\n}\r\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\r\n\r\nimport { uniq } from 'lodash';\r\n\r\n// import Color from 'colorjs.io';\r\nimport Color from 'colorjs.io';\r\n\r\nexport interface ApcaColorVariantsObj {\r\n  [key: number]: Array<string>;\r\n}\r\n\r\n@Injectable({\r\n  providedIn: 'root',\r\n})\r\nexport class ColorUtilService {\r\n  baseWhite = 'white';\r\n  baseBlack = '#28231d';\r\n  cjsWhite = new Color(this.baseWhite);\r\n  cjsBlack = new Color(this.baseBlack);\r\n\r\n  greyRamp = this.cjsWhite.range(this.cjsBlack, { space: 'oklab' });\r\n\r\n  apcaVals: Array<number> = [];\r\n\r\n  populateApcaVals() {\r\n    for (let i = 0; i <= 108; i++) {\r\n      this.apcaVals.push(i);\r\n    }\r\n  }\r\n\r\n  colorAsHex(color: any): string {\r\n    let hex: string;\r\n\r\n    hex = color.to('srgb', { inGamut: true }).toString({ format: 'hex' });\r\n\r\n    return hex;\r\n  }\r\n\r\n  filterAndFormatColors(\r\n    colorCollection: Array<any>,\r\n    bkgdColor: any,\r\n    lowerLimit: number,\r\n    ceiling: number\r\n  ) {\r\n    let group = [];\r\n\r\n    for (let i = 0; i < colorCollection.length; i++) {\r\n      const color = colorCollection[i];\r\n      const apcaContrast = Math.abs(color.contrast(bkgdColor, 'APCA'));\r\n\r\n      if (apcaContrast >= lowerLimit && apcaContrast < ceiling) {\r\n        group.push(this.colorAsHex(color));\r\n      }\r\n    }\r\n\r\n    return group;\r\n  }\r\n\r\n  assignAspcaValKeys(object: ApcaColorVariantsObj) {\r\n    this.apcaVals.forEach((val) => {\r\n      object[val] = [];\r\n    });\r\n  }\r\n\r\n  getGreyForegroundColors(bkgdColor: string): ApcaColorVariantsObj {\r\n    let fgColors: ApcaColorVariantsObj;\r\n\r\n    // using a create a ramp\r\n    // create all colors\r\n    const numVariants = 256;\r\n    const interval = 1 / numVariants;\r\n    let initGreys = [];\r\n    let greyVariants: ApcaColorVariantsObj = {};\r\n\r\n    this.assignAspcaValKeys(greyVariants);\r\n\r\n    for (let i = 0; i < numVariants; i++) {\r\n      const grey = this.greyRamp(interval * i);\r\n\r\n      initGreys.push(grey);\r\n    }\r\n\r\n    // filter in usable buckets\r\n    for (let i = 0; i < this.apcaVals.length; i++) {\r\n      const maxApcaVal = 108;\r\n      const key = this.apcaVals[i];\r\n      const nextKey =\r\n        this.apcaVals[i + 1] === maxApcaVal\r\n          ? maxApcaVal + 1\r\n          : this.apcaVals[i + 1];\r\n\r\n      greyVariants[key] = this.filterAndFormatColors(\r\n        initGreys,\r\n        bkgdColor,\r\n        key,\r\n        nextKey\r\n      );\r\n    }\r\n\r\n    fgColors = greyVariants;\r\n\r\n    return fgColors;\r\n  }\r\n\r\n  getFontColors(options: {\r\n    font: {\r\n      size: number;\r\n      weight: number;\r\n      body: boolean;\r\n    };\r\n  }): Array<string> {\r\n    let color: Array<string>;\r\n\r\n    color = [];\r\n\r\n    return color;\r\n  }\r\n\r\n  getObjectColors(\r\n    bkgdColor: string,\r\n    options: { minDimension: number }\r\n  ): Array<string> {\r\n    let objectColors: Array<string> = [];\r\n\r\n    const o = options;\r\n    const dimension = o.minDimension;\r\n\r\n    let contrast: number = 90;\r\n\r\n    const cSlope = 94.3;\r\n\r\n    const power = -0.595;\r\n\r\n    const objContrast = (size: number) => {\r\n      return Math.round(Math.pow(size, power) * cSlope);\r\n    };\r\n\r\n    contrast = objContrast(dimension);\r\n\r\n    contrast = contrast < 15 ? 15 : contrast;\r\n    contrast = contrast > 100 ? 100 : contrast;\r\n\r\n    console.log('objSize ' + dimension, 'contrast ' + contrast);\r\n\r\n    const colors = this.getGreyForegroundColors(bkgdColor);\r\n\r\n    objectColors = contrast ? colors[contrast] : objectColors;\r\n\r\n    return objectColors;\r\n  }\r\n\r\n  constructor() {\r\n    this.populateApcaVals();\r\n  }\r\n}\r\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 180
+                "line": 150
             },
             "type": "injectable"
         }
@@ -681,7 +681,7 @@
         },
         {
             "name": "ColorjsViewComponent",
-            "id": "component-ColorjsViewComponent-3e549b28718dbf8c601a78da5071e93d4a15bffd388bdbceaee36905483b63c5f820d5a583ea72cea5f87b3903cd24468967e21deb3e2272156c62ab56bbc437",
+            "id": "component-ColorjsViewComponent-36c7046c94eb17ca51e6edf5aa1a3641fd0128c0a9bd562cc0cc366b354b1e703962996cb66bea84418a4eadb6c25d3d5886b5ae45d3d4a938a9389c28a33315",
             "file": "src/app/colorjs-view/colorjs-view.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -718,9 +718,52 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 20,
+                    "line": 26,
                     "deprecated": false,
                     "deprecationMessage": ""
+                },
+                {
+                    "name": "adjustElementColor",
+                    "args": [
+                        {
+                            "name": "id",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "color",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 41,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "id",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "color",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
                 },
                 {
                     "name": "adjustHeaderColor",
@@ -728,7 +771,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 15,
+                    "line": 21,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -738,7 +781,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 30,
+                    "line": 36,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -748,7 +791,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 25,
+                    "line": 31,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -758,7 +801,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 41,
+                    "line": 57,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -768,7 +811,17 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 39,
+                    "line": 55,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "setbkgdColor",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 15,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -780,11 +833,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit, AfterViewInit } from '@angular/core';\r\nimport {\r\n  ColorUtilService,\r\n  ApcaColorVariantsObj,\r\n} from '../services/color-util.service';\r\n\r\n@Component({\r\n  selector: 'app-colorjs-view',\r\n  templateUrl: './colorjs-view.component.html',\r\n  styleUrls: ['./colorjs-view.component.css'],\r\n})\r\nexport class ColorjsViewComponent implements OnInit, AfterViewInit {\r\n  greys: ApcaColorVariantsObj = {};\r\n\r\n  adjustHeaderColor() {\r\n    let root = document.documentElement;\r\n    root.style.setProperty('--headerColor', this.greys['90'][0]);\r\n  }\r\n\r\n  adjustBodyColor() {\r\n    let root = document.documentElement;\r\n    root.style.setProperty('--bodyColor', this.greys['75'][0]);\r\n  }\r\n\r\n  adjustTertiaryTextColor() {\r\n    let root = document.documentElement;\r\n    root.style.setProperty('--tertiaryTextColor', this.greys['100'][0]);\r\n  }\r\n\r\n  adjustObjectColor() {\r\n    let root = document.documentElement;\r\n    root.style.setProperty('--objectColor', this.greys['15'][0]);\r\n  }\r\n\r\n  constructor(private cus: ColorUtilService) {\r\n    this.greys = this.cus.getGreyForegroundColors('white');\r\n  }\r\n\r\n  ngOnInit(): void {}\r\n\r\n  ngAfterViewInit(): void {\r\n    this.adjustHeaderColor();\r\n    this.adjustBodyColor();\r\n    this.adjustTertiaryTextColor();\r\n    this.adjustObjectColor();\r\n  }\r\n}\r\n",
+            "sourceCode": "import { Component, OnInit, AfterViewInit } from '@angular/core';\r\nimport {\r\n  ColorUtilService,\r\n  ApcaColorVariantsObj,\r\n} from '../services/color-util.service';\r\n\r\n@Component({\r\n  selector: 'app-colorjs-view',\r\n  templateUrl: './colorjs-view.component.html',\r\n  styleUrls: ['./colorjs-view.component.css'],\r\n})\r\nexport class ColorjsViewComponent implements OnInit, AfterViewInit {\r\n  greys: ApcaColorVariantsObj = {};\r\n\r\n  setbkgdColor() {\r\n    let root = document.documentElement;\r\n\r\n    root.style.setProperty('--bkgdColor', this.cus.baseWhite);\r\n  }\r\n\r\n  adjustHeaderColor() {\r\n    let root = document.documentElement;\r\n    root.style.setProperty('--headerColor', this.greys['90'][0]);\r\n  }\r\n\r\n  adjustBodyColor() {\r\n    let root = document.documentElement;\r\n    root.style.setProperty('--bodyColor', this.greys['75'][0]);\r\n  }\r\n\r\n  adjustTertiaryTextColor() {\r\n    let root = document.documentElement;\r\n    root.style.setProperty('--tertiaryTextColor', this.greys['100'][0]);\r\n  }\r\n\r\n  adjustObjectColor() {\r\n    let root = document.documentElement;\r\n    root.style.setProperty('--objectColor', this.greys['15'][0]);\r\n  }\r\n\r\n  adjustElementColor(id: string, color: string) {\r\n    const elem = document.getElementById(id);\r\n\r\n    if (elem) {\r\n      elem.style.color = color;\r\n    } else {\r\n      alert('no elem for: ' + id);\r\n    }\r\n  }\r\n\r\n  constructor(private cus: ColorUtilService) {\r\n    this.greys = this.cus.getGreyForegroundColors('white');\r\n  }\r\n\r\n  ngOnInit(): void {}\r\n\r\n  ngAfterViewInit(): void {\r\n    this.setbkgdColor();\r\n\r\n    this.adjustHeaderColor();\r\n    this.adjustBodyColor();\r\n    this.adjustTertiaryTextColor();\r\n    this.adjustObjectColor();\r\n\r\n    this.adjustElementColor('s14-400', this.greys['100'][0]);\r\n    this.adjustElementColor('s14-700', this.greys['75'][0]);\r\n\r\n    this.adjustElementColor('s21-400', this.greys['70'][0]);\r\n    this.adjustElementColor('s21-700', this.greys['65'][0]);\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".swatch {\r\n  width: 40px;\r\n  height: 1px;\r\n  background-color: coral;\r\n  display: inline-block;\r\n  margin-right: 1rem;\r\n}\r\n\r\n.swatch.small {\r\n  height: 4px;\r\n}\r\n.swatch.medium {\r\n  height: 10px;\r\n}\r\n.swatch.large {\r\n  height: 15px;\r\n}\r\n",
+                    "data": ".swatch {\r\n  width: 15px;\r\n  height: 1px;\r\n  background-color: coral;\r\n  display: inline-block;\r\n  margin-right: 20px;\r\n}\r\n\r\n.swatch.px-1 {\r\n  height: 1px;\r\n}\r\n.swatch.px-2 {\r\n  height: 2px;\r\n}\r\n.swatch.px-3 {\r\n  height: 3px;\r\n}\r\n.swatch.px-4 {\r\n  height: 4px;\r\n}\r\n.swatch.px-6 {\r\n  height: 6px;\r\n}\r\n.swatch.px-8 {\r\n  height: 8px;\r\n}\r\n.swatch.px-10 {\r\n  height: 10px;\r\n}\r\n.swatch.px-15 {\r\n  height: 15px;\r\n}\r\n",
                     "styleUrl": "./colorjs-view.component.css"
                 }
             ],
@@ -802,7 +855,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 33,
+                "line": 49,
                 "jsdoctags": [
                     {
                         "name": "cus",
@@ -819,7 +872,7 @@
                 "OnInit",
                 "AfterViewInit"
             ],
-            "templateData": "<main>\r\n  <h1>Colorjs assessment</h1>\r\n\r\n  <p>Color library created by Lea Verou<sup>a</sup></p>\r\n\r\n  <h2>Install</h2>\r\n\r\n  <code>npm install colorjs.io</code>\r\n\r\n  <h2>Treatment Tables</h2>\r\n\r\n  <p>Based on bronze guidance.</p>\r\n\r\n  <ul>\r\n    <li>75+ is for body and block text</li>\r\n    <li>60 is for non-body and non-block text that you want people to read.</li>\r\n    <li>\r\n      45 is for Headlines and art (smallest details >= 4px in smallest\r\n      dimesnion) that you want people to read.\r\n    </li>\r\n    <li>\r\n      30 is for any other text not listed previously like disabled element text.\r\n      Mostly Solid art too like various graph elements (smallest details >=\r\n      10px).\r\n    </li>\r\n    <li>\r\n      15 is absolute minimum that needs to be discernable i.e not invisible.\r\n      Smallest details >= 15px.\r\n    </li>\r\n  </ul>\r\n\r\n  <table>\r\n    <thead>\r\n      <tr>\r\n        <th>Font Size (px)</th>\r\n        <th>200</th>\r\n        <th>300</th>\r\n        <th>400</th>\r\n        <th>500</th>\r\n        <th>600</th>\r\n        <th>700</th>\r\n      </tr>\r\n    </thead>\r\n    <tbody>\r\n      <tr>\r\n        <th>12</th>\r\n        <td></td>\r\n        <td></td>\r\n        <td>90 (non-body)</td>\r\n      </tr>\r\n      <tr>\r\n        <th>14</th>\r\n        <td></td>\r\n        <td></td>\r\n        <td>90</td>\r\n        <td></td>\r\n        <td></td>\r\n        <td>75</td>\r\n      </tr>\r\n      <tr>\r\n        <th>15</th>\r\n        <td></td>\r\n        <td></td>\r\n        <td>75 (non-body)</td>\r\n      </tr>\r\n      <tr>\r\n        <th>16</th>\r\n        <td></td>\r\n        <td></td>\r\n        <td></td>\r\n        <td>75</td>\r\n        <td></td>\r\n        <td>60</td>\r\n      </tr>\r\n\r\n      <tr>\r\n        <th>18</th>\r\n        <td></td>\r\n        <td>90</td>\r\n        <td>75</td>\r\n        <td></td>\r\n        <td>60</td>\r\n      </tr>\r\n      <tr>\r\n        <th>21</th>\r\n        <td></td>\r\n        <td></td>\r\n        <td></td>\r\n        <td>60</td>\r\n      </tr>\r\n\r\n      <tr>\r\n        <th>24</th>\r\n        <td>90</td>\r\n        <td>75</td>\r\n        <td>60</td>\r\n        <td></td>\r\n        <td></td>\r\n        <td>45</td>\r\n      </tr>\r\n      <tr>\r\n        <th>36</th>\r\n        <td></td>\r\n        <td>60</td>\r\n        <td>45</td>\r\n      </tr>\r\n      <tr>\r\n        <th>48</th>\r\n        <td>60</td>\r\n      </tr>\r\n    </tbody>\r\n  </table>\r\n\r\n  <h2>APCA Colors, Minimum Object Size</h2>\r\n\r\n  <h3>100+</h3>\r\n\r\n  <div\r\n    *ngFor=\"let item of greys['100']\"\r\n    [style.backgroundColor]=\"item\"\r\n    class=\"swatch\"\r\n  ></div>\r\n  <h3>90</h3>\r\n\r\n  <div\r\n    *ngFor=\"let item of greys['90']\"\r\n    [style.backgroundColor]=\"item\"\r\n    class=\"swatch\"\r\n  ></div>\r\n\r\n  <h3>75</h3>\r\n\r\n  <div\r\n    *ngFor=\"let item of greys['75']\"\r\n    [style.backgroundColor]=\"item\"\r\n    class=\"swatch\"\r\n  ></div>\r\n\r\n  <h3>60</h3>\r\n\r\n  <div\r\n    *ngFor=\"let item of greys['60']\"\r\n    [style.backgroundColor]=\"item\"\r\n    class=\"swatch\"\r\n  ></div>\r\n\r\n  <h3>45</h3>\r\n\r\n  <div\r\n    *ngFor=\"let item of greys['45']\"\r\n    [style.backgroundColor]=\"item\"\r\n    class=\"swatch small\"\r\n  ></div>\r\n\r\n  <h3>30</h3>\r\n\r\n  <div\r\n    *ngFor=\"let item of greys['30']\"\r\n    [style.backgroundColor]=\"item\"\r\n    class=\"swatch medium\"\r\n  ></div>\r\n\r\n  <h3>15</h3>\r\n\r\n  <div\r\n    *ngFor=\"let item of greys['15']\"\r\n    [style.backgroundColor]=\"item\"\r\n    class=\"swatch large\"\r\n  ></div>\r\n</main>\r\n\r\n<hr />\r\n\r\n<footer>\r\n  <h2>Notes</h2>\r\n\r\n  <sup>a</sup>Co-author on CSS 4 specification.\r\n</footer>\r\n"
+            "templateData": "<main>\r\n  <h1>Colorjs assessment</h1>\r\n\r\n  <p>Color library created by Lea Verou<sup>a</sup></p>\r\n\r\n  <h2>Install and Import</h2>\r\n\r\n  <p>\r\n    <code>npm install colorjs.io</code>\r\n  </p>\r\n\r\n  <p>\r\n    <code>import Color from 'colorjs.io'</code>\r\n  </p>\r\n\r\n  <h2>Text Examples<sub>using reference Font \"Arial\"</sub></h2>\r\n\r\n  <h3>By Font Size</h3>\r\n\r\n  <h4>14px</h4>\r\n  <div class=\"example-area\">\r\n    <p id=\"s14-400\" class=\"w400\">\r\n      APCA reports lightness contrast as an Lc value from Lc 0 to Lc 106 for\r\n      dark text on a light background, and Lc 0 to Lc -108 for light text on a\r\n      dark background (dark mode). The minus sign merely indicates negative\r\n      contrast, which means light text on a dark background.\r\n    </p>\r\n\r\n    <p id=\"s14-700\" class=\"w700\">\r\n      APCA reports lightness contrast as an Lc value from Lc 0 to Lc 106 for\r\n      dark text on a light background, and Lc 0 to Lc -108 for light text on a\r\n      dark background (dark mode). The minus sign merely indicates negative\r\n      contrast, which means light text on a dark background.\r\n    </p>\r\n  </div>\r\n\r\n  <h4>21px</h4>\r\n  <div class=\"example-area\">\r\n    <p id=\"s21-400\" class=\"w400\" [style.fontSize]=\"'21px'\">\r\n      APCA reports lightness contrast as an Lc value from Lc 0 to Lc 106 for\r\n      dark text on a light background, and Lc 0 to Lc -108 for light text on a\r\n      dark background (dark mode). The minus sign merely indicates negative\r\n      contrast, which means light text on a dark background.\r\n    </p>\r\n\r\n    <p id=\"s21-700\" class=\"w700\" [style.fontSize]=\"'21px'\">\r\n      APCA reports lightness contrast as an Lc value from Lc 0 to Lc 106 for\r\n      dark text on a light background, and Lc 0 to Lc -108 for light text on a\r\n      dark background (dark mode). The minus sign merely indicates negative\r\n      contrast, which means light text on a dark background.\r\n    </p>\r\n  </div>\r\n\r\n  <h2>APCA Colors, Minimum Object Size</h2>\r\n\r\n  <h3>90<sub>equiv. WCAG 2.1 7</sub></h3>\r\n\r\n  <div\r\n    *ngFor=\"let item of greys['90']\"\r\n    [style.backgroundColor]=\"item\"\r\n    class=\"swatch\"\r\n  ></div>\r\n\r\n  <h3>60<sub>equiv. WCAG 2.1 3</sub></h3>\r\n\r\n  <div\r\n    *ngFor=\"let item of greys['60']\"\r\n    [style.backgroundColor]=\"item\"\r\n    class=\"swatch px-2\"\r\n  ></div>\r\n\r\n  <h3>50</h3>\r\n  <div\r\n    *ngFor=\"let item of greys['50']\"\r\n    [style.backgroundColor]=\"item\"\r\n    class=\"swatch px-3\"\r\n  ></div>\r\n\r\n  <h3>45</h3>\r\n\r\n  <div\r\n    *ngFor=\"let item of greys['45']\"\r\n    [style.backgroundColor]=\"item\"\r\n    class=\"swatch px-4\"\r\n  ></div>\r\n\r\n  <h3>30</h3>\r\n\r\n  <div\r\n    *ngFor=\"let item of greys['30']\"\r\n    [style.backgroundColor]=\"item\"\r\n    class=\"swatch px-6\"\r\n  ></div>\r\n\r\n  <h3>25</h3>\r\n\r\n  <div\r\n    *ngFor=\"let item of greys['25']\"\r\n    [style.backgroundColor]=\"item\"\r\n    class=\"swatch px-8\"\r\n  ></div>\r\n\r\n  <h3>20</h3>\r\n\r\n  <div\r\n    *ngFor=\"let item of greys['20']\"\r\n    [style.backgroundColor]=\"item\"\r\n    class=\"swatch px-10\"\r\n  ></div>\r\n\r\n  <h3>15</h3>\r\n\r\n  <div\r\n    *ngFor=\"let item of greys['15']\"\r\n    [style.backgroundColor]=\"item\"\r\n    class=\"swatch px-15\"\r\n  ></div>\r\n</main>\r\n\r\n<hr />\r\n\r\n<footer>\r\n  <h2>Notes</h2>\r\n\r\n  <sup>a</sup>Co-author on CSS 4 specification.\r\n</footer>\r\n"
         },
         {
             "name": "HeaderComponent",
@@ -1440,7 +1493,7 @@
                 "linktype": "component",
                 "name": "ColorjsViewComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/9",
+                "coverageCount": "0/11",
                 "status": "low"
             },
             {
