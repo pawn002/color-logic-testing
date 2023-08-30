@@ -1,8 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
-  --minFontSize: 10.5pt;
-  --baseFontSize: 14pt;
+  --minFontSize: 9px;
+  --baseFontSize: 12px;
 
   --headerFont: Georgia;
   --bodyFont: "Atkinson Hyperlegible", Tahoma, Verdana, sans-serif;
@@ -16,7 +16,7 @@
   --tertiaryTextColor: yellow;
   --objectColor: green;
 
-  --headerGrowRat: 1.62;
+  --headerGrowRat: 1.618;
   --h1FontSize: calc(
     var(--baseFontSize) * var(--headerGrowRat) * var(--headerGrowRat) *
       var(--headerGrowRat)
@@ -98,6 +98,11 @@ sup {
   font-weight: 400;
   font-family: var(--bodyFont);
   /* line-height: 0; */
+}
+
+sub {
+  position: relative;
+  top: 1ch;
 }
 
 hr {
